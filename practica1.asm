@@ -31,6 +31,7 @@ segment .text
 		int 80h
 
 		call ascii_bin
+		mov dword[capital], eax
 
 		mov eax, 4
 		mov ebx, 1
@@ -44,6 +45,9 @@ segment .text
 		mov edx, 80
 		int 80h
 
+		call ascii_bin
+		mov dword[redito], eax
+
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, prompt3
@@ -56,8 +60,15 @@ segment .text
 		mov edx, 80
 		int 80h
 
+		call ascii_bin
+		mov dword[tiempo], eax
+
+		mov eax, 1
+		mov ebx, 0
+		int 80h
+
 	ascii_bin:
-		sub eax, 1
+		dec eax
 		mov ecx, eax
 		mov edx, 0
 		mov eax, 0
@@ -65,11 +76,12 @@ segment .text
 		loop_start:
 			mov bl, byte[capital+edx]
 			sub bl, 0x30
-			mul eax, eax, 10
+			imul eax, eax, 10
 			movzx ebx, bl
 			add eax, ebx
-			add edx, 1
+			inc edx
 			loop loop_start
+		ret
 		
 		
 			
