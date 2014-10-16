@@ -9,14 +9,11 @@ segment .data
 	l_pro3 equ $-prompt3
 
 segment .bss
-	capital resb 10
-
-	redito resb 10
-
-	tiempo resb 10
-
-	resultado resb 10
-
+	capital resd 1	
+	redito resd 1
+	tiempo resd 1
+	resultado resd 1
+	
 segment .text
 	global _start
 
@@ -33,7 +30,6 @@ segment .text
 		mov edx, 80
 		int 80h
 
-		mov ebx, [capital]
 		call ascii_bin
 
 		mov eax, 4
@@ -61,16 +57,23 @@ segment .text
 		int 80h
 
 	ascii_bin:
-		add eax, -1
+		sub eax, 1
 		mov ecx, eax
 		mov edx, 0
+		mov eax, 0
 
 		loop_start:
-			mov al, byte[capital+edx]
+			mov bl, byte[capital+edx]
+			sub bl, 0x30
+			mul eax, eax, 10
+			movzx ebx, bl
+			add eax, ebx
+			add edx, 1
+			loop loop_start
+		
+		
 			
-
-
-
+			
 
 
 
