@@ -1,11 +1,11 @@
 segment .data
-	prompt1 db "Introduzca el capital: "
+	prompt1 db "Introduzca el capital: ", 0
 	l_pro1 equ $-prompt1
 
-	prompt2 db "Introduzca el redito: "
+	prompt2 db "Introduzca el redito: ", 0
 	l_pro2 equ $-prompt2
 
-	prompt3 db "Introduzca el tiempo: "
+	prompt3 db "Introduzca el tiempo: ", 0
 	l_pro3 equ $-prompt3
 
 segment .bss
