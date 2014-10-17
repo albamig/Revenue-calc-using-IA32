@@ -1,4 +1,4 @@
-﻿;
+;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -28,10 +28,13 @@ segment .bss
 
 	; Reserva espacio de 32 bits para almacenar el intercambio
 	input resb 10
+
+	result resq 1
 	
 segment .text
 	global _start
-
+	extern interes
+	
 	_start:
 		; Imprimir por pantalla la petición del capital
 		mov eax, 4
@@ -87,6 +90,11 @@ segment .text
 		push qword[capital]
 		push qword[redito]
 		push qword[tiempo]
+
+		call interes
+
+		pop qword[result]
+		add esp, 8
 
 		mov eax, 1
 		mov ebx, 0
