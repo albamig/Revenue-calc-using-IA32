@@ -50,12 +50,6 @@ segment .text
 		call ascii_bin
 		mov dword[capital], eax
 
-		mov eax, 4
-		mov ebx, 1
-		mov ecx, capital
-		mov edx, 99
-		int 80h
-
 		; Imprimir por pantalla la petición del rédito
 		mov eax, 4
 		mov ebx, 1
@@ -73,12 +67,6 @@ segment .text
 		call ascii_bin
 		mov dword[redito], eax
 
-		mov eax, 4
-		mov ebx, 1
-		mov ecx, redito
-		mov edx, 99
-		int 80h
-
 		; Imprimir por pantalla la petición del tiempo
 		mov eax, 4
 		mov ebx, 1
@@ -95,12 +83,10 @@ segment .text
 
 		call ascii_bin
 		mov dword[tiempo], eax
-
-		mov eax, 4
-		mov ebx, 1
-		mov ecx, tiempo
-		mov edx, 99
-		int 80h
+		
+		push qword[capital]
+		push qword[redito]
+		push qword[tiempo]
 
 		mov eax, 1
 		mov ebx, 0
@@ -129,7 +115,6 @@ segment .text
 			inc edx						;
 			loop loop_start				;
 		ret
-		
 		
 			
 			
