@@ -1,4 +1,4 @@
-;
+﻿;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -27,7 +27,7 @@ segment .bss
 	tiempo resd 1
 
 	; Reserva espacio de 32 bits para almacenar el intercambio
-	input resd 1
+	input resb 10
 	
 segment .text
 	global _start
