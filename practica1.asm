@@ -119,13 +119,12 @@ segment .text
 		mov ecx, eax					;
 		mov edx, 0 						;
 		mov eax, 0 						;
-		mov ebx, 0
 
 		loop_start:						;
 			mov bl, byte[input+edx]		;
 			sub bl, 0x30				;
-			imul eax, eax, 10			;
 			movzx ebx, bl				;
+			imul eax, eax, 10			;
 			add eax, ebx				;
 			inc edx						;
 			loop loop_start				;
