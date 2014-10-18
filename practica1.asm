@@ -96,9 +96,9 @@ segment .text
 		call interes
 
 		pop qword[result]
-		add esp, 8
 
 		call salida
+		add esp, 8
 
 		mov eax, 1
 		mov ebx, 0

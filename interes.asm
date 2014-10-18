@@ -4,9 +4,9 @@
 ;
 
 segment .text
-	global _start
+	global interes
 	
-	_start:
+	interes:
 		push rbp
 		mov rbp, rsp
 		mov rbx , qword[rbp+40]

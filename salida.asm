@@ -16,16 +16,16 @@ segment .data
 	outputInt db "El interes obtenido ha sido: ", 0
 	l_outInt equ $-outputInt
 
-segemnt .bss
-	input resb 10 
+segment .bss
+	input resd 1 
 
 segment .text
-	global _start
+	global salida
 
-	_start:
+	salida:
 		push rbp
 		mov rbp, rsp
-		
+
 		; Imprimir por pantalla la petición del capital
 		mov eax, 4
 		mov ebx, 1
@@ -33,7 +33,8 @@ segment .text
 		mov edx, l_outCap
 		int 80h
 
-		mov dword[input], [rbp+40]
+		mov eax, dword[rbp+40]
+		mov dword[input], eax
 		call transformacion
 
 		mov eax, 4
@@ -49,7 +50,8 @@ segment .text
 		mov edx, l_outRed
 		int 80h
 
-		mov dword[input], [rbp+32]
+		mov eax, dword[rbp+32]
+		mov dword[input], eax
 		call transformacion
 
 		mov eax, 4
@@ -65,7 +67,8 @@ segment .text
 		mov edx, l_outTie
 		int 80h
 
-		mov dword[input], [rbp+24]
+		mov eax, dword[rbp+24]
+		mov dword[input], eax
 		call transformacion
 
 		mov eax, 4
@@ -81,7 +84,8 @@ segment .text
 		mov edx, l_outInt
 		int 80h
 
-		mov dword[input], [rbp+16]
+		mov eax, dword[rbp+16]
+		mov dword[input], eax
 		call transformacion
 
 		mov eax, 4
@@ -100,11 +104,11 @@ segment .text
 				cdq
 				mov ecx, 10
 				idiv ecx
-				add ecx, 0x30
-				mov byte[input+edx], ecx
+				add cl, 0x30
+				mov byte[input+edx], cl
 				inc edx
 				cmp eax, 10
 				jge loop_start
-			add eax, 0x30
-			mov byte[input+edx]
+			add al, 0x30
+			mov byte[input+edx], al
 			ret
