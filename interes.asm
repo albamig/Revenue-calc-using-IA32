@@ -9,11 +9,11 @@ segment .text
 	_start:
 		push rbp
 		mov rbp, rsp
-		mov rbx , qword[rbp+32]
-		mov rdx, qword[rbp+24]
-		imul ebx, ebx, edx
-		mov rdx, qword[rbp+16] 
-		imul ebx, ebx, edx
+		mov rbx , qword[rbp+40]
+		mov rdx, qword[rbp+32]
+		imul ebx, edx
+		mov rdx, qword[rbp+24] 
+		imul ebx, edx
 		mov eax, ebx
 		cdq
 		mov ecx, 100

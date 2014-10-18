@@ -34,6 +34,7 @@ segment .bss
 segment .text
 	global _start
 	extern interes
+	extern salida
 	
 	_start:
 		; Imprimir por pantalla la petición del capital
@@ -90,11 +91,14 @@ segment .text
 		push qword[capital]
 		push qword[redito]
 		push qword[tiempo]
+		push qword[result]
 
 		call interes
 
 		pop qword[result]
 		add esp, 8
+
+		call salida
 
 		mov eax, 1
 		mov ebx, 0
