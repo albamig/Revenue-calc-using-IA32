@@ -87,16 +87,17 @@ segment .text
 
 		call ascii_bin
 		mov dword[tiempo], eax
-		
+	L1:	
 		push qword[capital]
 		push qword[redito]
 		push qword[tiempo]
 		push qword[result]
-
+	L2:
 		call interes
-
+	L3:
 		pop qword[result]
-
+		push qword[result]
+	L4:
 		call salida
 		add esp, 8
 
