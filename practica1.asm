@@ -117,7 +117,7 @@ segment .text
 		dec eax							;
 		mov ecx, eax
 		mov eax, 0 
-		cmp byte[input], 45
+		cmp byte[input], 0x2D
 		je Negativo
 
 		Positivo:
@@ -137,7 +137,7 @@ segment .text
 			inc edx						;
 			loop Loop_start				;
 
-		cmp byte[input], 45
+		cmp byte[input], 0x2D
 		jne Return
 
 		Complemento_a_2:
