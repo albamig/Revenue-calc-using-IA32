@@ -115,19 +115,37 @@ segment .text
 	;
 	ascii_bin:
 		dec eax							;
-		mov ecx, eax					;
-		mov edx, 0 						;
-		mov eax, 0 						;
+		mov ecx, eax
+		mov eax, 0 
+		cmp byte[input], 45
+		je Negativo
 
-		loop_start:						;
+		Positivo:
+			mov edx, 0 						;
+			jmp Loop_start
+
+		Negativo:
+			mov edx, 1
+			dec ecx
+
+		Loop_start:						;
 			mov bl, byte[input+edx]		;
 			sub bl, 0x30				;
 			movzx ebx, bl				;
 			imul eax, eax, 10			;
 			add eax, ebx				;
 			inc edx						;
-			loop loop_start				;
-		ret
+			loop Loop_start				;
+
+		cmp byte[input], 45
+		jne Return
+
+		Complemento_a_2:
+			xor eax, 0xFFFFFFFF
+			inc eax
+
+		Return:
+			ret
 		
 			
 			
