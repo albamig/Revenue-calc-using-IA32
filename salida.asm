@@ -17,7 +17,8 @@ segment .data
 	l_outInt equ $-outputInt
 
 segment .bss
-	input1 resd 1 
+	input1 resd 1
+	aux resd 1 
 
 segment .text
 	global salida
@@ -32,18 +33,19 @@ segment .text
 		mov ecx, outputCap
 		mov edx, l_outCap
 		int 80h
-	L5:
+	
 		mov eax, dword[rbp+40]
-	L6:
+	
 		mov dword[input1], eax
-exi		call bin_ascii
-	L20:
+		call bin_ascii
+		call reordenar
+
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, input1
 		mov edx, 10
 		int 80h
-	L21:
+	
 		; Imprimir por pantalla la petición del capital
 		mov eax, 4
 		mov ebx, 1
@@ -54,6 +56,7 @@ exi		call bin_ascii
 		mov eax, dword[rbp+32]
 		mov dword[input1], eax
 		call bin_ascii
+		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -71,6 +74,7 @@ exi		call bin_ascii
 		mov eax, dword[rbp+24]
 		mov dword[input1], eax
 		call bin_ascii
+		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -88,6 +92,7 @@ exi		call bin_ascii
 		mov eax, dword[rbp+16]
 		mov dword[input1], eax
 		call bin_ascii
+		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -98,33 +103,38 @@ exi		call bin_ascii
 		pop rbp
 		ret
 
-		bin_ascii:
-			call num_digit
-		L7:	mov eax, dword[input1]
-			loop_start:
+		bin_ascii:	
+			mov eax, dword[input1]
+			mov ebx, 10
+			mov ecx, 0
+			Loop_start:
 				cdq
-				mov ecx, 10
-				idiv ecx
-		L8:		add cl, 0x30
-				mov byte[input1+ebx], cl
-				dec ebx
-				cmp eax, 10
-				jge loop_start
-		L9:	add al, 0x30
-			mov byte[input1+ebx], al
-		L10:	ret
+				idiv ebx
+				add dl, 0x30
+				mov byte[input1+ecx], dl
+				inc ecx
+				cmp eax, 0
+				jne Loop_start
+			ret
 
-		num_digit:
-			mov ebx, 1
-			loop_start1:
-				cmp eax, 10
-				jge loop_start2
-				ret
-			loop_start2:
-				mov ecx, 10
-				idiv ecx
-				inc ebx
-				jmp loop_start1
+		reordenar:
+			mov eax, 0
+			dec ecx
+			Loop_start2:
+				mov bl, byte[input1+eax]
+				mov dl, byte[input1+ecx]
+				mov byte[input1+eax], dl
+				mov byte[input1+ecx], bl
+				inc eax
+				dec ecx
+				cmp ecx, eax
+				jg Loop_start2
+		ret
+
+
+		
+
+				
 
 
 

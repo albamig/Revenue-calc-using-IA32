@@ -52,6 +52,7 @@ segment .text
 		int 80h
 
 		call ascii_bin
+l1:
 		mov dword[capital], eax
 
 		; Imprimir por pantalla la petición del rédito
