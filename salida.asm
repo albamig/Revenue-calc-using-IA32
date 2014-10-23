@@ -18,8 +18,7 @@ segment .data
 
 segment .bss
 	input1 resd 1
-	output resd 1
-	aux resd 1 
+	output resb 10
 
 segment .text
 	global salida
@@ -42,7 +41,7 @@ segment .text
 
 		mov eax, 4
 		mov ebx, 1
-		mov ecx, input1
+		mov ecx, output
 		mov edx, 10
 		int 80h
 	
@@ -59,7 +58,7 @@ segment .text
 
 		mov eax, 4
 		mov ebx, 1
-		mov ecx, input1
+		mov ecx, output
 		mov edx, 10
 		int 80h
 
@@ -76,7 +75,7 @@ segment .text
 
 		mov eax, 4
 		mov ebx, 1
-		mov ecx, input1
+		mov ecx, output
 		mov edx, 10
 		int 80h
 
@@ -93,7 +92,7 @@ segment .text
 
 		mov eax, 4
 		mov ebx, 1
-		mov ecx, input1
+		mov ecx, output
 		mov edx, 10
 		int 80h
 
@@ -105,9 +104,9 @@ segment .text
 			mov eax, dword[input1]
 			mov ebx, 10
 			mov ecx, 1
-			mov byte[input1], 0xA
-			cmp byte[input1+4], 0xFF
-			jge Loop_start1
+			mov byte[output], 0xA
+			cmp byte[input1+3], 0xFF
+			jne Loop_start1
 			xor eax, 0xFFFFFFFF
 			inc eax
 
@@ -120,10 +119,10 @@ segment .text
 				cmp eax, 0
 				jne Loop_start1
 
-			cmp byte[input1+4], 0xFF
-			jge Reordenar
-			inc ecx
+			cmp byte[input1+3], 0xFF
+			jne Reordenar
 			mov byte[output+ecx], 0x2D
+			inc ecx
 
 			Reordenar:
 				mov eax, 0
