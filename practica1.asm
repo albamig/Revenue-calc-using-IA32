@@ -1,4 +1,4 @@
-;
+﻿;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -52,7 +52,7 @@ segment .text
 		int 80h
 
 		call ascii_bin
-l1:
+
 		mov dword[capital], eax
 
 		; Imprimir por pantalla la petición del rédito
@@ -88,17 +88,17 @@ l1:
 
 		call ascii_bin
 		mov dword[tiempo], eax
-	L1:	
+		
 		push qword[capital]
 		push qword[redito]
 		push qword[tiempo]
 		push qword[result]
-	L2:
+	
 		call interes
-	L3:
+	
 		pop qword[result]
 		push qword[result]
-	L4:
+	
 		call salida
 		add esp, 8
 
@@ -115,34 +115,35 @@ l1:
 	;	· eax - Número en binario
 	;
 	ascii_bin:
-		dec eax							;
-		mov ecx, eax
+		dec eax					; Decrementamos eax para obtener el numero de cifras exacto 
+		mov ecx, eax				; y lo movemos a ecx para gbernar el bucle
 		mov eax, 0 
-		cmp byte[input], 0x2D
-		je Negativo
+		cmp byte[input], 0x2D			; Comparamos el primer byte del parametro "input" para comprobar si es el caracter "-"
+		je Negativo				; si la comparacion es correcta saltamos a la etiqueta "Negativo"
 
 		Positivo:
-			mov edx, 0 						;
-			jmp Loop_start
+			mov edx, 0 			; Colocamos el contador para movernos por los bytes de la palabra a 0
+			jmp Loop_start			; Realizamos un salto incondicional a la etiqueta Loop_start
 
 		Negativo:
-			mov edx, 1
-			dec ecx
+			mov edx, 1			; Colocamos el contador para movernos por los bytes de la palbara a 1
+			dec ecx				; Decrementamos el ecx ya que tiene una cifra decimal menos
 
-		Loop_start:						;
-			mov bl, byte[input+edx]		;
-			sub bl, 0x30				;
-			movzx ebx, bl				;
-			imul eax, eax, 10			;
-			add eax, ebx				;
-			inc edx						;
-			loop Loop_start				;
+		Loop_start:						
+			mov bl, byte[input+edx]			; Movemos al registro bl el primer byte del parametro
+			sub bl, 0x30				; restamos 0x30 para combertirlo en un numero decimal
+			movzx ebx, bl				; Depositamos el byte en ebx con extension de signo
+			imul eax, eax, 10			; Multiplicamos el registro que contendra el valor final por 10
+			add eax, ebx				; y le sumamos el byte de ebx, incrementamos en uno el contador
+			inc edx					; para movernos por la palabra
+			loop Loop_start				; volvemos a saltar al bucle decrementandose en uno ecx
 
-		cmp byte[input], 0x2D
-		jne Return
+		cmp byte[input], 0x2D				; Comparamos de nuevo el primer byte con el caracter "-"
+		jne Return					; si la comparacion es correcta se pasara a hacer el complemento a2
+								; en caso contrario saltamos al "Return"
 
 		Complemento_a_2:
-			xor eax, 0xFFFFFFFF
+			xor eax, 0xFFFFFFFF			; Realizamos el complemento a2 del numero y le sumamos 1
 			inc eax
 
 		Return:
