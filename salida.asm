@@ -34,8 +34,7 @@ segment .text
 		mov edx, l_outCap
 		int 80h
 	
-		mov eax, dword[rbp+40]
-	
+		mov eax, dword[rbp+40]	
 		mov dword[input1], eax
 		call bin_ascii
 
@@ -100,7 +99,8 @@ segment .text
 		ret
 		;Funcion que recibe como paramteros un numero
 		;y transforma sus cifras decimales a codigo ASCII para imprimirlo por pantalla.
-		bin_ascii:	
+		bin_ascii:
+			mov qword[output], 0	
 			mov eax, dword[input1]
 			mov ebx, 10
 			mov ecx, 1
