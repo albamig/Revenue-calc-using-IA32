@@ -1,4 +1,4 @@
-﻿;
+;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -18,6 +18,7 @@ segment .data
 
 segment .bss
 	input1 resd 1
+	output resd 1
 	aux resd 1 
 
 segment .text
@@ -38,7 +39,6 @@ segment .text
 	
 		mov dword[input1], eax
 		call bin_ascii
-		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -56,7 +56,6 @@ segment .text
 		mov eax, dword[rbp+32]
 		mov dword[input1], eax
 		call bin_ascii
-		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -74,7 +73,6 @@ segment .text
 		mov eax, dword[rbp+24]
 		mov dword[input1], eax
 		call bin_ascii
-		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -92,7 +90,6 @@ segment .text
 		mov eax, dword[rbp+16]
 		mov dword[input1], eax
 		call bin_ascii
-		call reordenar
 
 		mov eax, 4
 		mov ebx, 1
@@ -107,37 +104,37 @@ segment .text
 		bin_ascii:	
 			mov eax, dword[input1]
 			mov ebx, 10
-			mov ecx, 0
-			Loop_start:
+			mov ecx, 1
+			mov byte[input1], 0xA
+			cmp byte[input1+4], 0xFF
+			jge Loop_start1
+			xor eax, 0xFFFFFFFF
+			inc eax
+
+			Loop_start1:
 				cdq
 				idiv ebx
 				add dl, 0x30
-				mov byte[input1+ecx], dl
+				mov byte[output+ecx], dl
 				inc ecx
 				cmp eax, 0
-				jne Loop_start
-			ret
-		;Funcion que coloca las cifras del numero transformado en posicion correcta.
-		reordenar:
-			mov eax, 0
-			dec ecx
-			Loop_start2:
-				mov bl, byte[input1+eax]
-				mov dl, byte[input1+ecx]
-				mov byte[input1+eax], dl
-				mov byte[input1+ecx], bl
-				inc eax
+				jne Loop_start1
+
+			cmp byte[input1+4], 0xFF
+			jge Reordenar
+			inc ecx
+			mov byte[output+ecx], 0x2D
+
+			Reordenar:
+				mov eax, 0
 				dec ecx
-				cmp ecx, eax
-				jg Loop_start2
+				Loop_start2:
+					mov bl, byte[output+eax]
+					mov dl, byte[output+ecx]
+					mov byte[output+eax], dl
+					mov byte[output+ecx], bl
+					inc eax
+					dec ecx
+					cmp ecx, eax
+					jg Loop_start2
 		ret
-
-
-		
-
-				
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿;
+;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -148,16 +148,3 @@ segment .text
 
 		Return:
 			ret
-		
-			
-			
-
-
-
-
-
-
-
-
-
-
