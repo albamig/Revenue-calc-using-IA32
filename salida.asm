@@ -1,4 +1,4 @@
-;
+﻿;
 ; Código desarrollado por Sergio Delgado y Alberto Amigo.
 ; Práctica 1 de AOC (IA32).
 ;
@@ -102,7 +102,8 @@ segment .text
 
 		pop rbp
 		ret
-
+		;Funcion que recibe como paramteros un numero
+		;y transforma sus cifras decimales a codigo ASCII para imprimirlo por pantalla.
 		bin_ascii:	
 			mov eax, dword[input1]
 			mov ebx, 10
@@ -116,7 +117,7 @@ segment .text
 				cmp eax, 0
 				jne Loop_start
 			ret
-
+		;Funcion que coloca las cifras del numero transformado en posicion correcta.
 		reordenar:
 			mov eax, 0
 			dec ecx
