@@ -132,10 +132,11 @@ segment .text
 
 		Loop_start:						
 			mov bl, byte[input+edx]			
-			sub bl, 0x30				; Restamos a cada byte 0x30 para combertirlo en un numero decimal
+			sub bl, 0x30				; Restamos a cada byte 0x30 para convertirlo en un numero decimal
 			movzx ebx, bl			
 			imul eax, eax, 10			; Multiplicamos recursivamente  el registro que contendra el valor final por 10
 			add eax, ebx				; y le sumamos el siguiente byte de la palabra
+			inc edx
 			loop Loop_start				
 
 		cmp byte[input], 0x2D			; Comparamos de nuevo el primer byte con el caracter "-"

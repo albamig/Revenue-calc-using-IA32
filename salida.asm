@@ -35,7 +35,6 @@ segment .text
 		int 80h
 	
 		mov eax, dword[rbp+40]
-	
 		mov dword[input1], eax
 		call bin_ascii
 
