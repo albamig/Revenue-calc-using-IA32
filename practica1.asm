@@ -89,6 +89,7 @@ segment .text
 		call ascii_bin
 		mov dword[tiempo], eax
 		
+		;Introducir en la pila todos los parametros necesarios
 		push qword[capital]
 		push qword[redito]
 		push qword[tiempo]
@@ -116,32 +117,30 @@ segment .text
 	;
 	ascii_bin:
 		dec eax					; Decrementamos eax para obtener el numero de cifras exacto 
-		mov ecx, eax				; y lo movemos a ecx para gbernar el bucle
+		mov ecx, eax			; y lo movemos a ecx para gobernar el bucle
 		mov eax, 0 
-		cmp byte[input], 0x2D			; Comparamos el primer byte del parametro "input" para comprobar si es el caracter "-"
+		cmp byte[input], 0x2D	; Comparamos el primer byte del parametro "input" para comprobar si es el caracter "-"
 		je Negativo				; si la comparacion es correcta saltamos a la etiqueta "Negativo"
 
 		Positivo:
 			mov edx, 0 			; Colocamos el contador para movernos por los bytes de la palabra a 0
-			jmp Loop_start			; Realizamos un salto incondicional a la etiqueta Loop_start
+			jmp Loop_start			
 
 		Negativo:
 			mov edx, 1			; Colocamos el contador para movernos por los bytes de la palbara a 1
 			dec ecx				; Decrementamos el ecx ya que tiene una cifra decimal menos
 
 		Loop_start:						
-			mov bl, byte[input+edx]			; Movemos al registro bl el primer byte del parametro
-			sub bl, 0x30				; restamos 0x30 para combertirlo en un numero decimal
-			movzx ebx, bl				; Depositamos el byte en ebx con extension de signo
-			imul eax, eax, 10			; Multiplicamos el registro que contendra el valor final por 10
-			add eax, ebx				; y le sumamos el byte de ebx, incrementamos en uno el contador
-			inc edx					; para movernos por la palabra
-			loop Loop_start				; volvemos a saltar al bucle decrementandose en uno ecx
+			mov bl, byte[input+edx]			
+			sub bl, 0x30				; Restamos a cada byte 0x30 para combertirlo en un numero decimal
+			movzx ebx, bl			
+			imul eax, eax, 10			; Multiplicamos recursivamente  el registro que contendra el valor final por 10
+			add eax, ebx				; y le sumamos el siguiente byte de la palabra
+			loop Loop_start				
 
-		cmp byte[input], 0x2D				; Comparamos de nuevo el primer byte con el caracter "-"
-		jne Return					; si la comparacion es correcta se pasara a hacer el complemento a2
-								; en caso contrario saltamos al "Return"
-
+		cmp byte[input], 0x2D			; Comparamos de nuevo el primer byte con el caracter "-"
+		jne Return
+				
 		Complemento_a_2:
 			xor eax, 0xFFFFFFFF			; Realizamos el complemento a2 del numero y le sumamos 1
 			inc eax

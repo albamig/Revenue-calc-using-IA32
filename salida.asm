@@ -27,14 +27,15 @@ segment .text
 		push rbp
 		mov rbp, rsp
 
-		; Imprimir por pantalla la petición del capital
+		; Imprimir por pantalla el resultado del capital
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, outputCap
 		mov edx, l_outCap
 		int 80h
 	
-		mov eax, dword[rbp+40]	
+		mov eax, dword[rbp+40]
+	
 		mov dword[input1], eax
 		call bin_ascii
 
@@ -44,7 +45,7 @@ segment .text
 		mov edx, 10
 		int 80h
 	
-		; Imprimir por pantalla la petición del capital
+		; Imprimir por pantalla el resultado del redito
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, outputRed
@@ -61,7 +62,7 @@ segment .text
 		mov edx, 10
 		int 80h
 
-		; Imprimir por pantalla la petición del capital
+		; Imprimir por pantalla el resultado del tiempo
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, outputTie
@@ -78,7 +79,7 @@ segment .text
 		mov edx, 10
 		int 80h
 
-		; Imprimir por pantalla la petición del capital
+		; Imprimir por pantalla el resultado del interes
 		mov eax, 4
 		mov ebx, 1
 		mov ecx, outputInt
@@ -97,39 +98,41 @@ segment .text
 
 		pop rbp
 		ret
-		;Funcion que recibe como paramteros un numero
-		;y transforma sus cifras decimales a codigo ASCII para imprimirlo por pantalla.
-		bin_ascii:
-			mov qword[output], 0	
-			mov eax, dword[input1]
-			mov ebx, 10
-			mov ecx, 1
-			mov byte[output], 0xA
-			cmp byte[input1+3], 0xFF
+		;
+		; Funcion que recibe como paramteros un numero
+		; y transforma sus cifras decimales a codigo ASCII para imprimirlo por pantalla.
+		;
+		bin_ascii:	
+			mov qword[output], 0
+			mov eax, dword[input1]		
+			mov ebx, 10			
+			mov ecx, 1 
+			mov byte[output], 0xA		; Colocamos en output un salto de linea para luego imprimirlo
+			cmp byte[input1+3], 0xFF	; Comprobamos si el numero es negativo 
 			jne Loop_start1
-			xor eax, 0xFFFFFFFF
+			xor eax, 0xFFFFFFFF			; Realizamos el complemento a2 del numero en caso de que sea negativo
 			inc eax
 
 			Loop_start1:
-				cdq
-				idiv ebx
-				add dl, 0x30
-				mov byte[output+ecx], dl
+				cdq							; Este bucle realiza recursivamente una division del numero por 10 
+				idiv ebx					; hasta que el cociente de la operacion es 0
+				add dl, 0x30				; Sumamos 0x30 al resto para pasarlo a caracter ASCII
+				mov byte[output+ecx], dl 	; Guardando el resto en el espacio reservado para la salida
 				inc ecx
 				cmp eax, 0
 				jne Loop_start1
 
-			cmp byte[input1+3], 0xFF
-			jne Reordenar
-			mov byte[output+ecx], 0x2D
+			cmp byte[input1+3], 0xFF		; Al finalizar el bucle comprobamos si el numero era negativo
+			jne Reordenar					; si es asi colocamos el caracter "-" en la ultima posicion
+			mov byte[output+ecx], 0x2D	
 			inc ecx
 
 			Reordenar:
 				mov eax, 0
 				dec ecx
-				Loop_start2:
-					mov bl, byte[output+eax]
-					mov dl, byte[output+ecx]
+				Loop_start2:			
+					mov bl, byte[output+eax]	; Esta funcion ordena los numeros ya transformados en ASCII
+					mov dl, byte[output+ecx]	; ya que el metodo bin_ascii los deja en la posicion opuesta
 					mov byte[output+eax], dl
 					mov byte[output+ecx], bl
 					inc eax
